@@ -1,0 +1,75 @@
+body{
+  text-align: center;
+  background-color: #49A78E;
+}
+nav{
+  height: 60px;
+  margin: 10px;
+  background-color: white;
+}
+footer{
+  /* text-align: center; */
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+}
+ol{
+  float: right;
+  list-style: none;
+}
+section{
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+
+
+}
+ul,li{
+  text-align: left;
+  list-style: none;
+}
+
+
+.nav-btn{
+  cursor: pointer;
+  float:left;
+  text-align: center;
+  width: 100px;
+  height: 30px;
+  color:#213453;
+  background-color:#49AFC1;
+  border: 10px #49AFC1;
+  box-shadow: 2px 2px 5px -2px black;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.sec-btn{
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  color:white;
+  background-color:#49AFC1;
+  border: 10px #49AFC1;
+  box-shadow: 2px 2px 5px -2px black;
+}
+.img-map{
+  padding: 20px;
+  width: 60%;
+  height: auto;
+}
+.photo-list{
+  float:left;
+  padding: 20px;
+  width: 100%;
+
+}
+.myphoto{
+
+  width: 180px;
+  margin-right: 20px;
+  height:200px;
+  border: 10px solid gray;
+}
+#section-photo{
+  height:550px;
+}
