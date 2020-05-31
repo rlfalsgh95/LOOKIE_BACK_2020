@@ -11,12 +11,12 @@ function changeState(id,tmptype){
 	 var query="id="+id+"&type="+type;
 	 oReq.open("post", "/MavenTodo/TodoTypeServlet?"+query,true);//parameter를 붙여서 보낼수있음. 
 	 oReq.send();
-	 alert("changeState 실행!"+query);
+	 
 	 var num="n"+id;
 	 
 	 
 	 oReq.addEventListener("load", function(evt){
-		 alert(num+type);
+		 
 		 var li=document.querySelector("#"+num);
 		 var locate;
 		 if(type=='TODO'){
