@@ -1,0 +1,90 @@
+
+body{
+    margin:10px;
+}
+
+.title{
+    transform: rotate(-30DEG);
+    position:absolute;
+    float:left;
+    padding-top: 18px;
+    font-size: 175%;
+    font-weight: bold;
+}
+
+.new{
+    float:right;
+    display:block;
+	text-align:center;
+	color:white;
+	background-color:rgb(125, 152, 241);
+	padding: 10px 40px;
+}
+a{
+    color:white;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+.new:hover{
+    cursor: pointer;
+    color:whitesmoke;
+}
+
+.flex-container{ 
+    clear:both;
+    display:flex;
+    justify-content: flex-end;
+}
+
+#TODO{
+    margin-left:50px;
+}
+
+.list{
+    width: 30%;
+   	text-align: center;
+}
+
+
+.list > p:first-child{
+    font-size: 154%;
+    text-align: left;
+    background-color:rgb(255, 240, 218);
+    color:orange;
+}
+
+
+.list > p:nth-child(n+2){
+    text-align: left;
+    background-color:rgb(218, 238, 247);
+    color:rgb(107, 140, 201);
+    /* padding : 30px 20px; */
+    /* height:36px; */
+}
+
+.list > p{
+    font-size: 92%;
+    background-color:rgb(182, 211, 235);
+    color:rgb(29, 178, 236);
+    margin:5px 2.5px;
+    padding: 29px 15px;
+}
+.item-title{
+    color: black;
+    font-weight:bold;
+    padding-bottom:5px;
+    font-size:120%;
+}
+.button{
+    display: inline-block;
+    float: right;
+    box-sizing: border-box;
+    background-color: rgb(247, 239, 239);
+    padding: 10px;
+}
+.button:hover{
+    background: rgba(0, 0, 0, 0.11);
+    cursor: pointer;
+}

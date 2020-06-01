@@ -1,0 +1,69 @@
+body *{
+    margin:auto;
+    width:1000px;
+    /* border: 1px solid black; */
+}
+
+form{
+    line-height: 30px;
+}
+h2{
+    text-align: center;
+}
+
+input{
+    padding: 10px 0px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+label{
+    margin-top:10px;
+}
+
+input[name='what'], input[name='who']{
+    width: 100%;
+    padding: 12px 0;
+}
+
+input[name='who']{
+    width:50%;
+}
+
+input[type='radio']{
+    width: 20px;
+}
+.buttons{
+    width:20%;
+    color:white ;
+    background-color:rgb(130, 207, 252);
+    margin:10px;
+    text-align: center;
+}
+
+.buttons:hover{
+    text-decoration: underline;
+    cursor:pointer;
+}
+.bottom{
+    width:100%;
+    margin:0;
+    overflow:auto;
+}
+input[type=before]{
+    border:1px solid black;
+    color:black;
+    background-color:white;
+    margin-left:0;
+    float:left;
+}
+
+input[type=submit]{
+    border:none;
+    margin-right:auto;
+    margin-left:36.7%;
+}
+
+input[type=reset]{
+    border:none;
+    margin-right: 0;
+}
