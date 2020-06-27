@@ -14,7 +14,7 @@ import java.util.List;
 public class GuestbookDao {
     String dbUrl = "jdbc:mysql://localhost:3306/lookie?useUnicode=true&characterEncoding=utf8&useSSL=false";
     String dbId = "root";
-    String dbPassword = "!d8h6ukja123";
+    String dbPassword = "";
 
     public List<Guestbook> getGuestbooks(){
         List<Guestbook> list = new ArrayList<>();
