@@ -1,7 +1,6 @@
 package kr.or.connect.service.impl;
 
 import kr.or.connect.dao.ProductImageDao;
-import kr.or.connect.dto.FileInfo;
 import kr.or.connect.dto.ProductImage;
 import kr.or.connect.service.FileInfoService;
 import kr.or.connect.service.ProductImageService;

@@ -3,15 +3,24 @@ package kr.or.connect.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 //  Spring MVC와 Swagger2의 기본 설정이 자동으로 설정 된다.
@@ -62,19 +71,34 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
     */
     @Bean
     public Docket api() {
+        List<ResponseMessage> responseMessages = new ArrayList<>();
+        responseMessages.add(new ResponseMessageBuilder()
+                .code(200)
+                .message("OK")
+                .build());
+        responseMessages.add(new ResponseMessageBuilder()
+                .code(404)
+                .message("The requested information could not be found")
+                .build());
+        responseMessages.add(new ResponseMessageBuilder()
+                .code(500)
+                .message("Internal Server Error")
+                .build());
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any()) // // 현재 RequestMapping으로 할당된 모든 URL 리스트를 추출
                 .paths(PathSelectors.ant("/api/**"))// PathSelectors.any() 를 할경우 모든 경로가 다 사용된다. RestController가 아닌 것 까지 사용된다.
                 .build()
                 .apiInfo(apiInfo())
-                .useDefaultResponseMessages(false);
+                .useDefaultResponseMessages(false)
+                .globalResponseMessage(RequestMethod.GET, responseMessages);    // API 응답 메시지
     }
 
      // API Info
     private ApiInfo apiInfo() {
         Contact contact = new Contact("길민호", "https://www.edwith.org", "rlfalsgh95@naver.com");
-        ApiInfo apiInfo =  new ApiInfo("boostcourse ProjectC", "APIs Sample", "Sample Doc 0.1v", "", contact, "This sentence will be display.", "/");
+        ApiInfo apiInfo =  new ApiInfo("Reservation API", "You can get reservation information.", "Sample Doc 0.1v", "", contact, "", "/");
         return apiInfo;
     }
 }

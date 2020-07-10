@@ -25,7 +25,7 @@ public class ReservationUserCommentDao {
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public int getScore(int productId){
+    public Integer getScore(int productId){
         Map<String, Integer> params = new HashMap<>();
         params.put("productId", productId);
 

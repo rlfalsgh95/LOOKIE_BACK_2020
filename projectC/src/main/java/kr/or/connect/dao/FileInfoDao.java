@@ -7,11 +7,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.print.attribute.HashAttributeSet;
 import javax.sql.DataSource;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static kr.or.connect.dao.sqls.FileInfoDaoSqls.SELECT_BY_ID;

@@ -1,7 +1,5 @@
 package kr.or.connect.dao.sqls;
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
-
 public class ReservationUserCommentDaoSqls {
     private static final String LIMIT_CLAUSE = " LIMIT :start, :limit";
     private static final String ORDER_BY = " ORDER BY id DESC";

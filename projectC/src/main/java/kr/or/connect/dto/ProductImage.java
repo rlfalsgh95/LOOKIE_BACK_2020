@@ -10,7 +10,6 @@ public class ProductImage {
     private String type;
     private int fileInfoId;
 
-
     private String fileName;
     private String saveFileName;
     private String contentType;
