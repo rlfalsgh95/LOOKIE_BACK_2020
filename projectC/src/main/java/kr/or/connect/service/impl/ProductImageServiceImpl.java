@@ -6,12 +6,14 @@ import kr.or.connect.service.FileInfoService;
 import kr.or.connect.service.ProductImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class ProductImageServiceImpl implements ProductImageService {
     @Autowired
     ProductImageDao productImageDao;

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryDao categoryDao;
@@ -22,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public List<Category> selectAll() {
-        return categoryDao.selectAll();
+    public List<Category> selectAllCategory() {
+        return categoryDao.selectAllCategory();
     }
 }

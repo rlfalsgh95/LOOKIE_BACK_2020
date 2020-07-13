@@ -14,7 +14,6 @@ import java.util.Map;
 
 import static kr.or.connect.dao.sqls.ReservationUserCommentDaoSqls.*;
 
-
 @Repository
 public class ReservationUserCommentDao {
     private NamedParameterJdbcTemplate jdbc;
@@ -38,7 +37,7 @@ public class ReservationUserCommentDao {
 
         return jdbc.queryForList(SELECT_COMMENT_IMAGE_FILE_NAME_BY_COMMENT_ID, params, String.class);
     }
-    public List<ReservationUserComment> selectByProductId(int productId, int start){
+    public List<ReservationUserComment> selectCommentsByProductId(int productId, int start){
         Map<String, Object> params = new HashMap<>();
         params.put("productId", productId);
         params.put("start", start);
@@ -47,7 +46,7 @@ public class ReservationUserCommentDao {
         return jdbc.query(SELECT_BY_PRODUCT_ID, params, rowMapper);
     }
 
-    public List<ReservationUserComment> selectAll(int start){
+    public List<ReservationUserComment> selectComments(int start){
         Map<String, Object> params = new HashMap<>();
 
         params.put("start", start);
@@ -58,5 +57,12 @@ public class ReservationUserCommentDao {
 
     public int getTotalCount(){
         return jdbc.queryForObject(GET_TOTAL_COUNT, Collections.<String, Object>emptyMap(), Integer.class);
+    }
+
+    public int getCountByProductId(int productId){
+        Map<String, Integer> params = new HashMap<>();
+        params.put("productId", productId);
+
+        return jdbc.queryForObject(GET_TOTAL_COUNT_BY_PRODUCT_ID, params, Integer.class);
     }
 }

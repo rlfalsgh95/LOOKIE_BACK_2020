@@ -41,12 +41,18 @@ public class ReservationApiController {
         Map<String, Object> resultMap = new LinkedHashMap<>();  // 응답 결과에서 Map의 요소가 순서대로 출력되도록 LinkedHashMap을 사용
 
         int size = categoryService.getCount();  // 카테고리의 개수
-        List<Category> items = categoryService.selectAll(); // 카테고리 목록 select
+        List<Category> items = categoryService.selectAllCategory(); // 카테고리 목록 select
 
         /* 결과 응답 */
         resultMap.put("size", size);
         resultMap.put("items", items);
 
+        /* category 테이블이 비어있으면, 아래 내용이 출력됨.
+        {
+            "size": 0,
+            "items":[]
+        }
+        */
         return resultMap;
     }
 
@@ -59,22 +65,29 @@ public class ReservationApiController {
         int displayCount = 0;
         int totalCount = 0;
 
+        if(categoryId == 0) // start의 값과는 상관없이 해당 카테고리 또는 전체 상품의 개수를 응답에 포함시킴.
+            totalCount = displayInfoService.getTotalCount();
+        else
+            totalCount = displayInfoService.getCountByCategoryId(categoryId);
+
         if (start >= 1) // start가 1보다 작으면, limit 절에서 error를 발생시키므로, db에서 조회하지 않고 기본값으로 응답함.
         {
             displayInfos = displayInfoService.selectDisplayInfos(start - 1, categoryId);
             displayCount = displayInfos.size();
-
-            if(categoryId == 0)
-                totalCount = displayInfoService.getTotalCount();
-            else
-                totalCount = displayInfoService.getCountByCategoryId(categoryId);
-
         }
 
         /* 결과 응답 */
         resultMap.put("totalCount", totalCount);
         resultMap.put("productCount", displayCount);
         resultMap.put("products", displayInfos);
+
+        /* display_info 테이블이 비어있으면, 아래 내용이 출력됨.
+        {
+            "totalCount": 0,
+            "productCount": 0,
+            "products":[]
+        }
+        */
 
         return resultMap;
     }
@@ -91,6 +104,13 @@ public class ReservationApiController {
         resultMap.put("size", size);
         resultMap.put("items", promotions);
 
+        /* promotion 테이블이 비어있으면, 아래 내용이 출력됨.
+        {
+            "size": 0,
+            "items":[]
+        }
+        */
+
         return resultMap;
     }
     
@@ -98,15 +118,21 @@ public class ReservationApiController {
     @GetMapping(path = "/displayinfos/{displayId}")
     public Map<String, Object> getDisplayinfosById(@PathVariable (name = "displayId") int displayId){
         Map<String, Object> resultMap = new LinkedHashMap<>();
+        List<ProductImage> productImageList = new ArrayList<>();
+        List<ProductPrice> productPriceList = new ArrayList<>();
+        List<DisplayInfoImage> displayInfoImageList = new ArrayList<>();
+        Integer avgScore = null;
 
         DisplayInfo displayInfo = displayInfoService.selectDisplayInfoById(displayId);
 
-        int productId = displayInfo.getId();
-        List<ProductImage> productImageList = productImageService.selectProductImagesByProductId(productId);
-        Integer avgScore = reservationUserCommentService.getScore(productId);   // 반환 타입을 Integer로 하여, score의 평균을 구할 수 없을 경우 null을 반환하도록 함.
+        if(displayInfo != null){    // displayId에 해당 하는 정보가 있는 경우에만 나머지 정보를 조회
+            int productId = displayInfo.getId();
+            productImageList = productImageService.selectProductImagesByProductId(productId);
+            avgScore = reservationUserCommentService.getScore(productId);   // 반환 타입을 Integer로 하여, score의 평균을 구할 수 없을 경우 null을 반환하도록 함.
 
-        List<ProductPrice> productPriceList = productPriceService.selectByProductId(productId);
-        List<DisplayInfoImage> displayInfoImageList = displayInfoImageService.selectDisplayInfoImagesByDisplayInfoId(displayId);
+            productPriceList = productPriceService.selectByProductId(productId);
+            displayInfoImageList = displayInfoImageService.selectDisplayInfoImagesByDisplayInfoId(displayId);
+        }
 
         /* 결과 응답 */
         resultMap.put("product", displayInfo);
@@ -127,13 +153,16 @@ public class ReservationApiController {
         int totalCount = 0;
         int commentCount = 0;
 
-        if(start >= 1){ // start가 1보다 작으면, limit 절에서 error를 발생시키므로, db에서 조회하지 않고 기본값으로 응답함.
-            totalCount = reservationUserCommentService.getTotalCount();
+        if(productId == null)   // url에 productId의 값을 명시하지 않은 경우
+            totalCount = reservationUserCommentService.getTotalCount(); // totalCount는 전체 comment의 개수
+        else
+            totalCount = reservationUserCommentService.getCountByProductId(productId);  // totalCount는 productId의 댓글의 개수
 
+        if(start >= 1){ // start가 1보다 작으면, limit 절에서 error를 발생시키므로, db에서 조회하지 않고 기본값으로 응답함.
             if(productId == null) { // url에 productId의 값을 명시하지 않은 경우
-                commentList = reservationUserCommentService.selectAll(start - 1);
+                commentList = reservationUserCommentService.selectComments(start - 1);
             }else{
-                commentList = reservationUserCommentService.selectByProductId(productId, start - 1);
+                commentList = reservationUserCommentService.selectCommentsByProductId(productId, start - 1);
             }
             commentCount = commentList.size();
         }

@@ -10,7 +10,6 @@ import java.util.Map;
 
 import static kr.or.connect.dao.sqls.DisplayInfoImageDaoSql.SELECT_DISPLAY_INFO_IMAGE_INFO_BY_DISPLAY_INFO_ID;
 
-
 @Repository
 public class DisplayInfoImageDao {
     private NamedParameterJdbcTemplate jdbc;

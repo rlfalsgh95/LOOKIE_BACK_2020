@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -14,7 +15,7 @@ import java.util.List;
 import static kr.or.connect.dao.sqls.CategoryDaoSqls.GET_COUNT;
 import static kr.or.connect.dao.sqls.CategoryDaoSqls.SELLECT_ALL;
 
-@Service
+@Repository
 public class CategoryDao {
     @Autowired
     DataSource dataSource;
@@ -26,7 +27,7 @@ public class CategoryDao {
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public List<Category> selectAll(){
+    public List<Category> selectAllCategory(){
         return jdbc.query(SELLECT_ALL, rowMapper);
     }
 

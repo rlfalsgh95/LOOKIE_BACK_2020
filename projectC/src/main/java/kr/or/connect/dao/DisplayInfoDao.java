@@ -1,6 +1,7 @@
 package kr.or.connect.dao;
 
 import kr.or.connect.dto.DisplayInfo;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -26,7 +27,6 @@ public class DisplayInfoDao {
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    @Transactional
     public List<DisplayInfo> selectDisplayInfos(int start, int limit, int categoryId){
         Map<String, Integer> params = new HashMap<>();
         List<DisplayInfo> result = null;
@@ -47,7 +47,11 @@ public class DisplayInfoDao {
     public DisplayInfo selectDisplayInfoById(int displayId){
         Map<String, Integer> params = new HashMap<>();
         params.put("displayId", displayId);
-        return jdbc.queryForObject(SELECT_BY_DISPLAY_ID, params, rowMapper);
+        try{
+            return jdbc.queryForObject(SELECT_BY_DISPLAY_ID, params, rowMapper);
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     public int getTotalCount(){

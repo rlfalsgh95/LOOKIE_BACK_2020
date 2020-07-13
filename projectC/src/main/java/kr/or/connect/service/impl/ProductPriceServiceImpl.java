@@ -5,10 +5,12 @@ import kr.or.connect.dto.ProductPrice;
 import kr.or.connect.service.ProductPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ProductPriceServiceImpl implements ProductPriceService {
     @Autowired
     ProductPriceDao productPriceDao;
