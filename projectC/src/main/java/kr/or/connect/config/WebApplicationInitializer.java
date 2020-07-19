@@ -1,5 +1,6 @@
 package kr.or.connect.config;
 
+import kr.or.connect.config.security.SecurityConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -7,12 +8,10 @@ import javax.servlet.Filter;
 
 // web.xml 파일을 대신하는 객체
 public class WebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-
-
     // spring 기본 설정 파일 클래스를 지정한다.
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{kr.or.connect.config.ApplicationConfig.class};
+        return new Class<?>[]{kr.or.connect.config.ApplicationConfig.class, kr.or.connect.config.security.SecurityConfig.class};
     }
 
     // Spring MVC 설정 파일 클래스를 지정한다.
@@ -20,8 +19,6 @@ public class WebApplicationInitializer extends AbstractAnnotationConfigDispatche
     protected Class<?>[] getServletConfigClasses() {
         return new Class<?>[]{kr.or.connect.config.WebMvcContextConfig.class};
     }
-
-    // Spring MVC 설정 파일 클래스를 지정한다.
 
     // getServletMapping()은 DispatcherServlet이 매핑되기 위한 하나 혹은 여러 개의 path를 지정한다.
     // 위의 코드에서는 애플리케이션 기본 서블릿인 /에만 매핑이 되어 있다. 그리고 이것은 애플리케이셔으로 들어오는 모든 요청을 처리한다.

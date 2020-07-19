@@ -1,15 +1,18 @@
 package kr.or.connect.controller;
 
 import io.swagger.annotations.ApiOperation;
+import kr.or.connect.dao.security.UserDao;
 import kr.or.connect.dto.*;
+import kr.or.connect.dto.security.UserEntity;
 import kr.or.connect.service.*;
+import kr.or.connect.service.security.UserDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -34,6 +37,92 @@ public class ReservationApiController {
 
     @Autowired
     DisplayInfoImageService displayInfoImageService;
+
+    @Autowired
+    UserDbService userDbService;
+
+    @Autowired
+    ReservationService reservationService;
+
+    @PostMapping("/reservation")
+    public Map<String, Object> reservation(@RequestBody Map<String, Object> requestParam, Principal principal){
+        UserEntity userEntity = userDbService.getUser(principal.getName());
+
+        ArrayList<Map<String, Object>> prices = null;
+        Integer userId = (Integer) requestParam.get("userId");
+        Map result = new HashMap();
+
+        if(userId != null && (userEntity.getUserId() == userId)){ // 로그인 유저의 userId와 예약 정보의 userId가 동일한 경우에만 예약을 진행.
+            Integer productId = (Integer)requestParam.get("productId");
+            Integer displayInfoId = (Integer)requestParam.get("displayInfoId");
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+            Date reservationYearMonthDay = null;
+            try{
+                reservationYearMonthDay = simpleDateFormat.parse(requestParam.get("reservationYearMonthDay").toString());
+            }catch(ParseException e){
+                e.printStackTrace();
+                return result;
+            }
+
+            if(productId != null && displayInfoId != null && reservationYearMonthDay != null && requestParam.get("prices") != null){
+                ReservationInfo reservationInfo = new ReservationInfo(productId, displayInfoId, reservationYearMonthDay, userId);
+
+                prices = (ArrayList<Map<String, Object>>)requestParam.get("prices");
+
+                result = reservationService.reservation(prices, reservationInfo);
+            }
+        }else{
+            System.out.println("유저 userId :" + userEntity.getUserId() + " 요청 userId : " + requestParam.get("userId"));
+            System.out.println("요청의 user와 일치하지 않아 예약을 진행할 수 없습니다.");
+        }
+
+        return result;
+    }
+
+    @GetMapping("/reservationinfos")
+    public Map<String, Object> reservationInfos(Principal principal){
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        String userEmail = principal.getName();
+
+        UserEntity userEntity = userDbService.getUser(userEmail);
+
+        List<ReservationDetailInfo> items = reservationService.selectReservationDetailInfoByUserId(userEntity.getUserId());
+        int size = items.size();
+
+        resultMap.put("size", size);
+        resultMap.put("items", items);
+
+        return resultMap;
+    }
+
+    @PutMapping("/reservationcancel")
+    public Map<String, Boolean> reservationCancel(@RequestBody Map<String, Integer> requestParam, Principal principal){
+        Map<String, Boolean> resultMap = new HashMap<>();
+
+        int reservationInfoId = requestParam.get("id");
+        boolean isSelf = false;
+        boolean cancelResult = false;
+
+        String userEmail = principal.getName();
+        UserEntity userEntity = userDbService.getUser(userEmail);
+
+        List<ReservationDetailInfo> reservationDetailInfos = reservationService.selectReservationDetailInfoByUserId(userEntity.getUserId());
+
+        for(ReservationDetailInfo reservationDetailInfo : reservationDetailInfos){
+            if(reservationDetailInfo.getId() == reservationInfoId){
+                isSelf = true;
+            }
+        }
+
+        if(isSelf == true){
+            cancelResult = reservationService.cancelReservation(reservationInfoId);
+        }
+
+        resultMap.put("result", cancelResult);
+
+        return resultMap;
+    }
 
     @ApiOperation(value = "카테고리 목록 구하기")
     @GetMapping(path = "/categories")
@@ -63,7 +152,7 @@ public class ReservationApiController {
 
         List<DisplayInfo> displayInfos = new ArrayList<>();
         int displayCount = 0;
-        int totalCount = 0;
+        int totalCount =   0;
 
         if(categoryId == 0) // start의 값과는 상관없이 해당 카테고리 또는 전체 상품의 개수를 응답에 포함시킴.
             totalCount = displayInfoService.getTotalCount();

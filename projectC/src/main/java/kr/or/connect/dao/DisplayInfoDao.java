@@ -49,7 +49,8 @@ public class DisplayInfoDao {
         params.put("displayId", displayId);
         try{
             return jdbc.queryForObject(SELECT_BY_DISPLAY_ID, params, rowMapper);
-        }catch(EmptyResultDataAccessException e){
+        }catch(EmptyResultDataAccessException e){   // JdbcTemplate, queryForInt, queryForLong, queryForObject의 조회 결과가 없거나 하나 이상의 row인 경우 IncorrectResultSizeDataAccessException(row가 하나 이상인 경우)
+                                                    // 또는 EmptyResultDataAccessException(row가 없는 경우)이 발생한다.
             return null;
         }
     }

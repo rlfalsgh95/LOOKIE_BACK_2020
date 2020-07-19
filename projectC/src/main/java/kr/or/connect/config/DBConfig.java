@@ -42,7 +42,7 @@ public class DBConfig implements TransactionManagementConfigurer {
     @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return transactionManager();
-    }
+    }   // 트랜잭션을 처리할 PlatformTransactionManager 객체를 반환
 
     @Bean
     public PlatformTransactionManager transactionManager(){

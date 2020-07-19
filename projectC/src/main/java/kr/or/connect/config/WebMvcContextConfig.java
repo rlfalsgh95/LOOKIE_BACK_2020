@@ -4,10 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -31,7 +29,6 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         final int cachePeriod = 31556926;
-
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:META-INF/resourses/webjars").setCachePeriod(cachePeriod);
         registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(cachePeriod);
         registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(cachePeriod);
@@ -42,6 +39,11 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("main");
     }*/
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addRedirectViewController("/", "/swagger-ui.html");    // "/"로 요청이 들어오면 "/swagger-ui.html"로 리다이렉트
+    }
 
     @Bean
     public InternalResourceViewResolver getInternalResourceViewResolver(){
@@ -64,9 +66,9 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
         Swagger2를 사용하려면 Docket객체를 Bean으로 설정해야 한다.
         Docker객체에는 어떤 경로의 Web API들을 자동으로 문서화 할 것인지에 대한 설정과 문서 설명에 대한 내용이 포함된다.
         Swagger 사용 시에는 Docket Bean 을 품고있는 설정 클래스 1개가 기본으로 필요하다.
-        Spring Boot 에서는 이 기본적인 설정파일 1개로 Swagger 와 Swagger UI 를 함께 사용가능하지만,
+        Spring Boot에서는 이 기본적인 설정파일 1개로 Swagger 와 Swagger UI 를 함께 사용 가능하지만,
         Spring MVC 의 경우 Swagger UI 를 위한 별도의 설정이 필요하다.
-        이는, Swagger UI 를 ResourceHandler 에 수동으로 등록해야 하는 작업인데,
+        이는, Swagger UI 를 ResourceHandler에 수동으로 등록해야 하는 작업인데,
         Spring Boot 에서는 이를 자동으로 설정해주지만 Spring MVC 에서는 그렇지 않기 때문이다.
     */
     @Bean
@@ -87,7 +89,7 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any()) // // 현재 RequestMapping으로 할당된 모든 URL 리스트를 추출
+                .apis(RequestHandlerSelectors.any()) // 현재 RequestMapping으로 할당된 모든 URL 리스트를 추출
                 .paths(PathSelectors.ant("/api/**"))// PathSelectors.any() 를 할경우 모든 경로가 다 사용된다. RestController가 아닌 것 까지 사용된다.
                 .build()
                 .apiInfo(apiInfo())
