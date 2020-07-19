@@ -18,9 +18,9 @@ import java.util.Map;
 
 @Repository
 public class PriceDao {
-    private NamedParameterJdbcTemplate jdbc;
-    private SimpleJdbcInsert insertAction;
-    private RowMapper<ReservationinfoPrice> priceRowMapper = BeanPropertyRowMapper.newInstance(ReservationinfoPrice.class);
+    private final NamedParameterJdbcTemplate jdbc;
+    private final SimpleJdbcInsert insertAction;
+    private final RowMapper<ReservationinfoPrice> priceRowMapper = BeanPropertyRowMapper.newInstance(ReservationinfoPrice.class);
 
     public PriceDao(DataSource dataSource){
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);

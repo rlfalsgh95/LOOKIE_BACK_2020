@@ -27,20 +27,6 @@ import java.util.List;
 @ComponentScan(basePackages = {"kr.or.connect.controller"})
 public class WebMvcContextConfig implements WebMvcConfigurer {
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        final int cachePeriod = 31556926;
-        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:META-INF/resourses/webjars").setCachePeriod(cachePeriod);
-        registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(cachePeriod);
-        registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(cachePeriod);
-        registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(cachePeriod);
-    }
-
-/*    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("main");
-    }*/
-
-    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/", "/swagger-ui.html");    // "/"로 요청이 들어오면 "/swagger-ui.html"로 리다이렉트
     }
@@ -65,7 +51,7 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
     /*
         Swagger2를 사용하려면 Docket객체를 Bean으로 설정해야 한다.
         Docker객체에는 어떤 경로의 Web API들을 자동으로 문서화 할 것인지에 대한 설정과 문서 설명에 대한 내용이 포함된다.
-        Swagger 사용 시에는 Docket Bean 을 품고있는 설정 클래스 1개가 기본으로 필요하다.
+        Swagger 사용 시에는 Docket Bean을 품고있는 설정 클래스 1개가 기본으로 필요하다.
         Spring Boot에서는 이 기본적인 설정파일 1개로 Swagger 와 Swagger UI 를 함께 사용 가능하지만,
         Spring MVC 의 경우 Swagger UI 를 위한 별도의 설정이 필요하다.
         이는, Swagger UI 를 ResourceHandler에 수동으로 등록해야 하는 작업인데,
@@ -103,4 +89,20 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
         ApiInfo apiInfo =  new ApiInfo("Reservation API", "You can get reservation information.", "Sample Doc 0.1v", "", contact, "", "/");
         return apiInfo;
     }
+
+    /*
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        final int cachePeriod = 31556926;
+        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:META-INF/resourses/webjars").setCachePeriod(cachePeriod);
+        registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(cachePeriod);
+        registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(cachePeriod);
+        registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(cachePeriod);
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("main");
+    }
+    */
 }

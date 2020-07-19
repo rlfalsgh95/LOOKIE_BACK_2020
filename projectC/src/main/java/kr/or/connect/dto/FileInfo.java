@@ -1,5 +1,7 @@
 package kr.or.connect.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class FileInfo {
@@ -7,8 +9,24 @@ public class FileInfo {
     private String saveFileName;
     private String contentType;
     private int deleteFlag;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")   // JSON 응답값의 형식을 지정
     private Date createDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")   // JSON 응답값의 형식을 지정
     private Date modifyDate;
+
+    @Override
+    public String toString() {
+        return "FileInfo{" +
+                "fileName='" + fileName + '\'' +
+                ", saveFileName='" + saveFileName + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", deleteFlag=" + deleteFlag +
+                ", createDate=" + createDate +
+                ", modifyDate=" + modifyDate +
+                '}';
+    }
 
     public String getFileName() {
         return fileName;
@@ -56,17 +74,5 @@ public class FileInfo {
 
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
-    }
-
-    @Override
-    public String toString() {
-        return "FileInfo{" +
-                "fileName='" + fileName + '\'' +
-                ", saveFileName='" + saveFileName + '\'' +
-                ", contentType='" + contentType + '\'' +
-                ", deleteFlag=" + deleteFlag +
-                ", createDate=" + createDate +
-                ", modifyDate=" + modifyDate +
-                '}';
     }
 }
