@@ -1,8 +1,7 @@
 package kr.or.connect.dao;
 
 import kr.or.connect.dao.sqls.PriceDaoSqls;
-import kr.or.connect.dto.ReservationInfo;
-import kr.or.connect.dto.ReservationinfoPrice;
+import kr.or.connect.dto.reservation.ReservationinfoPrice;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;

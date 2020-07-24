@@ -1,7 +1,7 @@
 package kr.or.connect.service.promotion.impl;
 
 import kr.or.connect.dao.promotion.PromotionDao;
-import kr.or.connect.dto.PromotionDetail;
+import kr.or.connect.dto.promotion.PromotionDetail;
 import kr.or.connect.service.promotion.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package kr.or.connect.dao.display;
 
-import kr.or.connect.dto.DisplayDetailInfo;
+import kr.or.connect.dto.display.DisplayDetailInfo;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;

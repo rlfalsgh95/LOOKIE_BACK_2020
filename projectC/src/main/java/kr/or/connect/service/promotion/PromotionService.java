@@ -1,6 +1,6 @@
 package kr.or.connect.service.promotion;
 
-import kr.or.connect.dto.PromotionDetail;
+import kr.or.connect.dto.promotion.PromotionDetail;
 
 import java.util.List;
 

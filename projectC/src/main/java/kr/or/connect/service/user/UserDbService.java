@@ -1,6 +1,6 @@
 package kr.or.connect.service.user;
-import kr.or.connect.dto.security.UserEntity;
-import kr.or.connect.dto.security.UserRoleEntity;
+import kr.or.connect.dto.user.UserEntity;
+import kr.or.connect.dto.user.UserRoleEntity;
 
 import java.util.List;
 

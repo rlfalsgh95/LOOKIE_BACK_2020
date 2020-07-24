@@ -9,6 +9,10 @@ public class ReservationDaoSqls {
                                                                            "FROM reservation_info r_info JOIN product product ON product.id = r_info.product_id " +
                                                                            "WHERE r_info.user_id = :userId";
 
+    public static final String SELECT_ALL_RESERVATION_INFO_ID_OF_USER = "SELECT id as reservation_id " +
+                                                                        "FROM reservation_info " +
+                                                                        "WHERE user_id = :userId";
+
     public static final String CANCEL_RESERVATION_BY_RESERVATION_INFO_ID = "UPDATE reservation_info " +
                                                                            "SET cancel_flag = :cancelFlag " +
                                                                            "WHERE id = :reservationInfoId";

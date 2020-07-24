@@ -1,6 +1,6 @@
 package kr.or.connect.dao.promotion;
 
-import kr.or.connect.dto.PromotionDetail;
+import kr.or.connect.dto.promotion.PromotionDetail;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

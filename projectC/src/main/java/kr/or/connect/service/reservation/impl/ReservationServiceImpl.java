@@ -3,9 +3,9 @@ package kr.or.connect.service.reservation.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.or.connect.dao.PriceDao;
 import kr.or.connect.dao.reservation.ReservationDao;
-import kr.or.connect.dto.ReservationDetailInfo;
-import kr.or.connect.dto.ReservationInfo;
-import kr.or.connect.dto.ReservationinfoPrice;
+import kr.or.connect.dto.reservation.ReservationDetailInfo;
+import kr.or.connect.dto.reservation.ReservationInfo;
+import kr.or.connect.dto.reservation.ReservationinfoPrice;
 import kr.or.connect.service.reservation.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,12 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     PriceDao priceDao;
+
+    @Override
+    @Transactional(readOnly = true)
+    public ReservationInfo selectReservationInfoByReservationInfoId(int reservationInfoId) {
+        return reservationDao.selectReservationInfoByReservationInfoId(reservationInfoId);
+    }
 
     @Override
     @Transactional(readOnly = false)
@@ -46,6 +52,12 @@ public class ReservationServiceImpl implements ReservationService {
         resultMap.put("prices", reservationInfoPriceList);
 
         return resultMap;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Integer> selectAllReservationInfoIdOfUser(int userId) {
+        return reservationDao.selectAllReservationInfoIdOfUser(userId);
     }
 
     @Override

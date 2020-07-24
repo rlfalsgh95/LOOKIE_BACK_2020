@@ -3,10 +3,10 @@ package kr.or.connect.service.user.impl;
 
 import kr.or.connect.dao.user.UserDao;
 import kr.or.connect.dao.user.UserRoleDao;
-import kr.or.connect.dto.security.User;
-import kr.or.connect.dto.security.UserEntity;
-import kr.or.connect.dto.security.UserRole;
-import kr.or.connect.dto.security.UserRoleEntity;
+import kr.or.connect.dto.user.User;
+import kr.or.connect.dto.user.UserEntity;
+import kr.or.connect.dto.user.UserRole;
+import kr.or.connect.dto.user.UserRoleEntity;
 import kr.or.connect.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

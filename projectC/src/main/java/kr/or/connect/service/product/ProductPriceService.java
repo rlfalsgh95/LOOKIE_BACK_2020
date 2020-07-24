@@ -1,6 +1,6 @@
 package kr.or.connect.service.product;
 
-import kr.or.connect.dto.ProductPrice;
+import kr.or.connect.dto.product.ProductPrice;
 
 import java.util.List;
 

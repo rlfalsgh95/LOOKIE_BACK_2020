@@ -1,6 +1,6 @@
 package kr.or.connect.dao.user;
 
-import kr.or.connect.dto.security.User;
+import kr.or.connect.dto.user.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;

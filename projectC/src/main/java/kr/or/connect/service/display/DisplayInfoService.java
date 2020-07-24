@@ -1,6 +1,6 @@
 package kr.or.connect.service.display;
 
-import kr.or.connect.dto.DisplayDetailInfo;
+import kr.or.connect.dto.display.DisplayDetailInfo;
 
 import java.util.List;
 

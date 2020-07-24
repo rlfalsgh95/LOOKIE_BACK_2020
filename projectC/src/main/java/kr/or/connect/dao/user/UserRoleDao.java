@@ -1,6 +1,6 @@
 package kr.or.connect.dao.user;
 
-import kr.or.connect.dto.security.UserRole;
+import kr.or.connect.dto.user.UserRole;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

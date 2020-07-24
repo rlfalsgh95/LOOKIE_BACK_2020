@@ -1,6 +1,6 @@
 package kr.or.connect.dao.category;
 
-import kr.or.connect.dto.CategoryDetail;
+import kr.or.connect.dto.category.CategoryDetail;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

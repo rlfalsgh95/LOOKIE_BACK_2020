@@ -1,10 +1,12 @@
 package kr.or.connect.config;
 
+import kr.or.connect.interceptor.LogInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import springfox.documentation.builders.PathSelectors;
@@ -25,19 +27,53 @@ import java.util.List;
 @EnableWebMvc   // Spring MVC설정
 @EnableSwagger2 // Swagger2설정
 @ComponentScan(basePackages = {"kr.or.connect.controller"})
+
+// fileDao, FileService, FileServiceImpl 수정
+// @Transactional은 service에서 사용, 메소드 모두 올바르게 적용되었는지 확인.
+// @Transcational readOnly 제대로 적용되었느지 확인
+// Service에서 Dao가 아닌 Service를 사용하고 있는지 확인.
+// 트랜잭션 단위로 잘 나누어져 있는지 확인
+// 필요없는 import 제거
+// 라우팅 할 수 있는 방법 찾기
+// 구현체에 interface에 없는 메소드가 정의되어 있는지 확인
+// 서비스에서는 Dao가 아닌 다른 서비스 객체를 이용하도록.
+// 구현체에 @Override 빠져있는지 확인
+// createDate, modifyDate는 dao에서 삽입
+// date 타입 필드는 @JsonFormat 어노테이션 사용
+// sql문 상수 사용할 때 클래스 명시하기.
+// count, avg와 같은 숫자값 하나 조회하는 것을 제외하고 조회는 select를 사용.
+// sql문의 param이 한개인 경우는 Collections.singletonMap 사용
+// queryForObject, queryForInt 등은 Service에서 try catch하고, controller에서는 null만 체크하도록.
+// try catch의 catch문에는 stacktrace 호출
+// 사용되지 않는 메소드, 변수는 삭제
+
 public class WebMvcContextConfig implements WebMvcConfigurer {
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/", "/swagger-ui.html");    // "/"로 요청이 들어오면 "/swagger-ui.html"로 리다이렉트
-    }
+    /*
+        @Override
+        public void configureViewResolvers(ViewResolverRegistry registry) {
+            registry.jsp("/WEB-INF/view/", ".jsp");
+        }
+    */
 
     @Bean
     public InternalResourceViewResolver getInternalResourceViewResolver(){
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
-
         return resolver;
+    }
+
+    @Bean
+    public MultipartResolver multipartResolver(){
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(1048 * 1048 * 10);   // 최대 10MB
+
+        return multipartResolver;
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addRedirectViewController("/", "/swagger-ui.html");    // "/"로 요청이 들어오면 "/swagger-ui.html"로 리다이렉트
     }
 
     // DefaultServlet에 대한 설정을 합니다.
@@ -46,6 +82,11 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LogInterceptor());
     }
 
     /*

@@ -1,7 +1,7 @@
 package kr.or.connect.service.display.impl;
 
 import kr.or.connect.dao.display.DisplayInfoDao;
-import kr.or.connect.dto.DisplayDetailInfo;
+import kr.or.connect.dto.display.DisplayDetailInfo;
 import kr.or.connect.service.display.DisplayInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package kr.or.connect.service.product;
 
-import kr.or.connect.dto.ProductImage;
+import kr.or.connect.dto.product.ProductImage;
 
 import java.util.List;
 

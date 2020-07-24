@@ -2,6 +2,7 @@ package kr.or.connect.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -29,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()   // csrf란 보안 설정 중에서 POST 방식으로 값을 전송할 때, 토큰을 사용하는 보안 설정이다. CSRF가 기본으로 설정되는데, CSRF를 사용하며 보안성은 높아지지만,개발 초기에는 불편함을 가진다는 단점이 있어 disable함. (disable() 메서드는 HttpSecurity를 다시 반환함.)
                 .authorizeRequests()    // 시큐리티 처리에 HttpServletRequest를 이용한다는 것을 의미함.
+                .antMatchers(HttpMethod.POST, "/api/comments").hasAnyRole("USER", "ADMIN")   // "/api/comments" url의 POST 요청의 경우는 "USER", "ADMIN" 권한이 필요.
                 .antMatchers("/api/reservation*").hasAnyRole("USER", "ADMIN")   // antMatchers()는 특정한 경로를 지정
                                                                                                   // hasAnyRole()메서드는 현현재 로그인된 사용자가 콤마(,)로 분리하여 주어진 role들 중 하나라도 가지고 있으면 true를 반환.
                                                                                                   // 제공된 role이 'ROLE_'로 시작하지 않으면 기본적으로 'ROLE_'를 추가한다. 이것은 DefaultWebSecurityExpressionHandler에서 defaultRolePrefix를 수정하여 커스터마이즈할 수 있다.

@@ -1,6 +1,6 @@
 package kr.or.connect.dao.product;
 
-import kr.or.connect.dto.ProductPrice;
+import kr.or.connect.dto.product.ProductPrice;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

@@ -1,7 +1,7 @@
 package kr.or.connect.service.user.impl;
 
-import kr.or.connect.dto.security.UserEntity;
-import kr.or.connect.dto.security.UserRoleEntity;
+import kr.or.connect.dto.user.UserEntity;
+import kr.or.connect.dto.user.UserRoleEntity;
 import kr.or.connect.service.user.UserDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

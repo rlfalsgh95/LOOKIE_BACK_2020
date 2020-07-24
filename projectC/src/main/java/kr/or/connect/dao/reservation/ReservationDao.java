@@ -1,8 +1,8 @@
 package kr.or.connect.dao.reservation;
 
 import kr.or.connect.dao.reservation.sqls.ReservationDaoSqls;
-import kr.or.connect.dto.ReservationDetailInfo;
-import kr.or.connect.dto.ReservationInfo;
+import kr.or.connect.dto.reservation.ReservationDetailInfo;
+import kr.or.connect.dto.reservation.ReservationInfo;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -34,6 +34,12 @@ public class ReservationDao {
 
         SqlParameterSource params = new BeanPropertySqlParameterSource(reservationInfo);
         return insertAction.executeAndReturnKey(params).intValue(); // 삽입 후, row의 id(primary key)를 반환.
+    }
+
+    public List<Integer> selectAllReservationInfoIdOfUser(int userId){
+        Map<String, Integer> param = Collections.singletonMap("userId", userId);
+
+        return jdbc.queryForList(ReservationDaoSqls.SELECT_ALL_RESERVATION_INFO_ID_OF_USER, param, Integer.class);
     }
 
     public ReservationInfo selectReservationInfoByReservationInfoId(int reservationInfoId){ // reservationInfoId에 해당하는 예약 정보를 조회

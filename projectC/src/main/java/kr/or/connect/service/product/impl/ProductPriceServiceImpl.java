@@ -1,7 +1,7 @@
 package kr.or.connect.service.product.impl;
 
 import kr.or.connect.dao.product.ProductPriceDao;
-import kr.or.connect.dto.ProductPrice;
+import kr.or.connect.dto.product.ProductPrice;
 import kr.or.connect.service.product.ProductPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

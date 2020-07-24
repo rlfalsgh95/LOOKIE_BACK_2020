@@ -19,8 +19,8 @@ public class ReservationUserCommentDaoSqls {
     public static final String GET_SCORE_AVG_BY_PRODUCT_ID = "SELECT avg(score) " +
                                                "FROM reservation_user_comment" + BY_PRODUCT_ID;
 
-    public static final String SELECT_COMMENT_IMAGE_FILE_NAME_BY_RESERVATION_USER_COMMENT_ID = "SELECT f_info.file_name " +
-                                                                              "FROM reservation_user_comment_image r_user_comment_image JOIN file_info f_info ON r_user_comment_image.file_id = f_info.id " +
-                                                                              "WHERE r_user_comment_image.reservation_user_comment_id = :reservationUserCommentId";
+    public static final String SELECT_USER_COMMENT_IMAGE_DETAIL_BY_USER_COMMENT_ID = "SELECT r_user_comment_image.id, file_name, save_file_name, content_type, delete_flag, create_date, modify_date, reservation_info_id, reservation_user_comment_id " +
+                                                                                     "FROM reservation_user_comment_image r_user_comment_image JOIN file_info f_info ON r_user_comment_image.file_id = f_info.id " +
+                                                                                     "WHERE reservation_user_comment_id = :userCommentId";
 
 }
