@@ -1,5 +1,6 @@
 package kr.or.connect.dao.product;
 
+import kr.or.connect.dao.product.sqls.ProductPriceDaoSqls;
 import kr.or.connect.dto.product.ProductPrice;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -7,11 +8,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static kr.or.connect.dao.product.sqls.ProductPriceDaoSqls.SELECT_BY_PRODUCT_ID;
 
 @Repository
 public class ProductPriceDao {
@@ -23,8 +22,8 @@ public class ProductPriceDao {
     }
 
     public List<ProductPrice> selectByProductId(int productId){
-        Map<String, Integer> params = new HashMap<>();
-        params.put("productId", productId);
-        return jdbc.query(SELECT_BY_PRODUCT_ID, params, rowMapper);
+        Map<String, Integer> params = Collections.singletonMap("productId", productId);
+
+        return jdbc.query(ProductPriceDaoSqls.SELECT_BY_PRODUCT_ID, params, rowMapper);
     }
 }

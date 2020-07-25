@@ -1,7 +1,7 @@
 package kr.or.connect.service.reservation.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.or.connect.dao.PriceDao;
+import kr.or.connect.dao.price.PriceDao;
 import kr.or.connect.dao.reservation.ReservationDao;
 import kr.or.connect.dto.reservation.ReservationDetailInfo;
 import kr.or.connect.dto.reservation.ReservationInfo;

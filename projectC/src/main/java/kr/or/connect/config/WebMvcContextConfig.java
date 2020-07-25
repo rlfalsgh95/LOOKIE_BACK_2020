@@ -28,24 +28,35 @@ import java.util.List;
 @EnableSwagger2 // Swagger2설정
 @ComponentScan(basePackages = {"kr.or.connect.controller"})
 
-// fileDao, FileService, FileServiceImpl 수정
-// @Transactional은 service에서 사용, 메소드 모두 올바르게 적용되었는지 확인.
-// @Transcational readOnly 제대로 적용되었느지 확인
-// Service에서 Dao가 아닌 Service를 사용하고 있는지 확인.
-// 트랜잭션 단위로 잘 나누어져 있는지 확인
-// 필요없는 import 제거
-// 라우팅 할 수 있는 방법 찾기
-// 구현체에 interface에 없는 메소드가 정의되어 있는지 확인
-// 서비스에서는 Dao가 아닌 다른 서비스 객체를 이용하도록.
-// 구현체에 @Override 빠져있는지 확인
-// createDate, modifyDate는 dao에서 삽입
-// date 타입 필드는 @JsonFormat 어노테이션 사용
-// sql문 상수 사용할 때 클래스 명시하기.
-// count, avg와 같은 숫자값 하나 조회하는 것을 제외하고 조회는 select를 사용.
-// sql문의 param이 한개인 경우는 Collections.singletonMap 사용
-// queryForObject, queryForInt 등은 Service에서 try catch하고, controller에서는 null만 체크하도록.
-// try catch의 catch문에는 stacktrace 호출
+/* 공통 */
 // 사용되지 않는 메소드, 변수는 삭제
+// try catch의 catch문에는 stacktrace 호출 (EmptyResultDataAccessException가 발생하면 Dao에서 null을 반환하도록 했으므로, 제외)
+// 필요없는 import 제거
+// count, avg와 같은 숫자값 하나 조회하는 것을 제외하고 조회는 select를 사용.
+
+/* dao, Service */
+// TODO: queryForObject, queryForInt 등은 Dao에서 try catch하고, controller에서는 null만 체크하도록.
+// createDate, modifyDate는 dao에서 삽입
+
+/* dto */
+// TODO : @JsonFormat 어노테이션 사용하지 않아도 일괄적으로 Date 객체의 형식을 지정할 수 있는 방법 찾기
+// date 타입 필드는 @JsonFormat 어노테이션 사용
+
+/* dao */
+// sql문의 param이 한개인 경우는 Collections.singletonMap 사용
+// sql문 상수 사용할 때 클래스 명시하기.
+// insertAction, rowMapper 이름 구체적으로
+// rowMapper, jdbc, insertAction에 final 붙이기
+
+/* Service */
+// 구현체에 @Override 빠져있는지 확인
+// 트랜잭션 단위로 잘 나누어져 있는지 확인
+// @Transactional은 service에서 사용, 메소드 모두 올바르게 적용되었는지 확인.
+// @Transcational readOnly 제대로 적용되었는지 확인
+// 서비스에서는 Dao가 아닌 다른 서비스 객체를 이용하도록. (대신 생성자가 아닌 Bean으로 Service 객체를 생성하는 경우, Service끼리 양방향 참조하는지 유의, 빈 생성시 오류가 발생 할 수 있으며, 설계상으로도 좋지 않은 구조라고 한다.)
+
+/* Controller */
+// TODO: 라우팅 할 수 있는 방법 찾기
 
 public class WebMvcContextConfig implements WebMvcConfigurer {
     /*
@@ -54,7 +65,6 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
             registry.jsp("/WEB-INF/view/", ".jsp");
         }
     */
-
     @Bean
     public InternalResourceViewResolver getInternalResourceViewResolver(){
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -127,8 +137,7 @@ public class WebMvcContextConfig implements WebMvcConfigurer {
      // API Info
     private ApiInfo apiInfo() {
         Contact contact = new Contact("길민호", "https://www.edwith.org", "rlfalsgh95@naver.com");
-        ApiInfo apiInfo =  new ApiInfo("Reservation API", "You can get reservation information.", "Sample Doc 0.1v", "", contact, "", "/");
-        return apiInfo;
+        return new ApiInfo("Reservation API", "You can get reservation information.", "Sample Doc 0.1v", "", contact, "", "/");
     }
 
     /*

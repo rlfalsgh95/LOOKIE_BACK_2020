@@ -46,6 +46,7 @@ public class ReservationUserCommentServiceImpl implements ReservationUserComment
     }
 
     @Override
+    // DB 작업을 하지 않기 때문에 transactional 붙여주지 않음.
     public List<ReservationUserCommentDetail> setUserCommentImagesOfComments(List<ReservationUserCommentDetail> comments) {
         for (ReservationUserCommentDetail comment : comments){
             List<ReservationUserCommentImageDetail> commentImages = selectUserCommentImages(comment);
@@ -102,8 +103,7 @@ public class ReservationUserCommentServiceImpl implements ReservationUserComment
     @Transactional(readOnly = false)
     public int insertUserComment(ReservationUserComment userComment) {
         // reservation_user_comment 테이블에 댓글 정보 추가.
-        int userCommentId = reservationUserCommentDao.insertUserComment(userComment);
 
-        return userCommentId;   // reservation_user_comment 테이블에 삽입한 row의 id를 반환
+        return reservationUserCommentDao.insertUserComment(userComment);   // reservation_user_comment 테이블에 삽입한 row의 id를 반환
     }
 }

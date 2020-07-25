@@ -1,4 +1,4 @@
-package kr.or.connect.dao.sqls;
+package kr.or.connect.dao.price.sqls;
 
 public class PriceDaoSqls {
     public static final String SELECT_PRICE_BY_RESERVATION_INFO_PRICE_ID = "SELECT id, reservation_info_id, product_price_id, count " +

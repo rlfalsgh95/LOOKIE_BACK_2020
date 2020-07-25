@@ -1,5 +1,7 @@
 package kr.or.connect.dto.reservation;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ReservationUserComment {
@@ -9,7 +11,11 @@ public class ReservationUserComment {
     private int userId;
     private int score;
     private String comment;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date createDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Date modifyDate;
 
     public ReservationUserComment(int productId, int reservationInfoId, int userId, int score, String comment) {

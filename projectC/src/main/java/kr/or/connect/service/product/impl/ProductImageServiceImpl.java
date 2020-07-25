@@ -3,6 +3,7 @@ package kr.or.connect.service.product.impl;
 import kr.or.connect.dao.file.FileInfoDao;
 import kr.or.connect.dao.product.ProductImageDao;
 import kr.or.connect.dto.product.ProductImage;
+import kr.or.connect.service.file.FileInfoService;
 import kr.or.connect.service.product.ProductImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,9 @@ public class ProductImageServiceImpl implements ProductImageService {
     ProductImageDao productImageDao;
 
     @Autowired
-    FileInfoDao fileInfoDao;
+    FileInfoService fileInfoService;
 
+    @Override
     public List<ProductImage> selectProductImagesByProductId(int productId){
         List<ProductImage> productImageList = new ArrayList<>();
 
@@ -31,7 +33,7 @@ public class ProductImageServiceImpl implements ProductImageService {
             int fileInfoId = (int)productImageInfo.get("file_id");
             String type = (String)productImageInfo.get("type");
 
-            ProductImage productImage = (ProductImage)fileInfoDao.selectByFileId((int)productImageInfo.get("file_id"), ProductImage.class);
+            ProductImage productImage = (ProductImage)fileInfoService.selectFileInfoByFileId((int)productImageInfo.get("file_id"), ProductImage.class);
 
             productImage.setProductId(productId);
             productImage.setProductImageId(productImageId);

@@ -1,5 +1,6 @@
 package kr.or.connect.dao.category;
 
+import kr.or.connect.dao.category.sqls.CategoryDaoSqls;
 import kr.or.connect.dto.category.CategoryDetail;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,9 +10,6 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.List;
-
-import static kr.or.connect.dao.category.sqls.CategoryDaoSqls.GET_CATEGORY_COUNT;
-import static kr.or.connect.dao.category.sqls.CategoryDaoSqls.SELECT_ALL_CATEGORY;
 
 @Repository
 public class CategoryDao {
@@ -23,10 +21,10 @@ public class CategoryDao {
     }
 
     public List<CategoryDetail> selectAllCategory(){
-        return jdbc.query(SELECT_ALL_CATEGORY, categoryRowMapper);
+        return jdbc.query(CategoryDaoSqls.SELECT_ALL_CATEGORY, categoryRowMapper);
     }
 
     public int getCategoryCount(){  // category 테이블의 행의 개수 반환.
-        return jdbc.queryForObject(GET_CATEGORY_COUNT, Collections.<String, Object>emptyMap(), Integer.class);
+        return jdbc.queryForObject(CategoryDaoSqls.GET_CATEGORY_COUNT, Collections.<String, Object>emptyMap(), Integer.class);
     }
 }

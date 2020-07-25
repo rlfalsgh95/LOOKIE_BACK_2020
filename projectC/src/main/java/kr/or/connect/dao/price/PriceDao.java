@@ -1,6 +1,6 @@
-package kr.or.connect.dao;
+package kr.or.connect.dao.price;
 
-import kr.or.connect.dao.sqls.PriceDaoSqls;
+import kr.or.connect.dao.price.sqls.PriceDaoSqls;
 import kr.or.connect.dto.reservation.ReservationinfoPrice;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -18,17 +18,17 @@ import java.util.Map;
 @Repository
 public class PriceDao {
     private final NamedParameterJdbcTemplate jdbc;
-    private final SimpleJdbcInsert insertAction;
+    private final SimpleJdbcInsert ReservationInfoPriceinsertAction;
     private final RowMapper<ReservationinfoPrice> priceRowMapper = BeanPropertyRowMapper.newInstance(ReservationinfoPrice.class);
 
     public PriceDao(DataSource dataSource){
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
-        this.insertAction = new SimpleJdbcInsert(dataSource).withTableName("reservation_info_price").usingGeneratedKeyColumns("id");
+        this.ReservationInfoPriceinsertAction = new SimpleJdbcInsert(dataSource).withTableName("reservation_info_price").usingGeneratedKeyColumns("id");
     }
 
     public int insertReservationInfoPrice(ReservationinfoPrice reservationinfoPrice){
         SqlParameterSource params = new BeanPropertySqlParameterSource(reservationinfoPrice);
-        return insertAction.executeAndReturnKey(params).intValue();
+        return ReservationInfoPriceinsertAction.executeAndReturnKey(params).intValue();
     }
 
     public ReservationinfoPrice selectPriceByReservationInfoPriceId(int reservationInfoPriceId){

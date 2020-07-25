@@ -1,4 +1,4 @@
-package kr.or.connect.service.user.impl;
+package kr.or.connect.dto.user;
 
 
 import org.springframework.security.core.GrantedAuthority;

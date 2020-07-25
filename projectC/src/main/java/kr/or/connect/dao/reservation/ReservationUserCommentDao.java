@@ -5,6 +5,7 @@ import kr.or.connect.dto.reservation.ReservationUserComment;
 import kr.or.connect.dto.reservation.ReservationUserCommentDetail;
 import kr.or.connect.dto.reservation.ReservationUserCommentImage;
 import kr.or.connect.dto.reservation.ReservationUserCommentImageDetail;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -16,13 +17,11 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.*;
 
-import static kr.or.connect.dao.reservation.sqls.ReservationUserCommentDaoSqls.*;
-
 @Repository
 public class ReservationUserCommentDao {
     private final NamedParameterJdbcTemplate jdbc;
-    private final RowMapper<ReservationUserCommentDetail> reservationUserCommentDetailRowMapper = BeanPropertyRowMapper.newInstance(ReservationUserCommentDetail.class);
-    private final RowMapper<ReservationUserCommentImageDetail> reservationUserCommentImageDetailRowMapper = BeanPropertyRowMapper.newInstance(ReservationUserCommentImageDetail.class);
+    private final RowMapper<ReservationUserCommentDetail> userCommentDetailRowMapper = BeanPropertyRowMapper.newInstance(ReservationUserCommentDetail.class);
+    private final RowMapper<ReservationUserCommentImageDetail> userCommentImageDetailRowMapper = BeanPropertyRowMapper.newInstance(ReservationUserCommentImageDetail.class);
 
     private final SimpleJdbcInsert userCommentInsertAction;
     private final SimpleJdbcInsert userCommentImageInsertAction;
@@ -42,17 +41,19 @@ public class ReservationUserCommentDao {
     }
 
     public Integer getScoreAvgByProductId(int productId){
-        Map<String, Integer> params = new HashMap<>();
-        params.put("productId", productId);
+        Map<String, Integer> params = Collections.singletonMap("productId", productId);
 
-        return jdbc.queryForObject(GET_SCORE_AVG_BY_PRODUCT_ID, params, Integer.class);
+        try{
+            return jdbc.queryForObject(ReservationUserCommentDaoSqls.GET_SCORE_AVG_BY_PRODUCT_ID, params, Integer.class);
+        }catch(EmptyResultDataAccessException e){   // JdbcTemplate, queryForInt, queryForLong, queryForObject의 조회 결과가 없거나 하나 이상의 row인 경우 IncorrectResultSizeDataAccessException(row가 하나 이상인 경우)
+            return null;                            // 또는 EmptyResultDataAccessException(row가 없는 경우)이 발생한다.
+        }
     }
 
     public List<ReservationUserCommentImageDetail> selectUserCommentImagesByUserCommentId(int userCommentId){
-        Map<String, Integer> params = new HashMap<>();
-        params.put("userCommentId", userCommentId);
+        Map<String, Integer> params = Collections.singletonMap("userCommentId", userCommentId);
 
-        return jdbc.query(ReservationUserCommentDaoSqls.SELECT_USER_COMMENT_IMAGE_DETAIL_BY_USER_COMMENT_ID, params, reservationUserCommentImageDetailRowMapper);
+        return jdbc.query(ReservationUserCommentDaoSqls.SELECT_USER_COMMENT_IMAGE_DETAIL_BY_USER_COMMENT_ID, params, userCommentImageDetailRowMapper);
     }
 
     public List<ReservationUserCommentDetail> selectUserCommentsByProductId(int productId, int start){
@@ -61,7 +62,7 @@ public class ReservationUserCommentDao {
         params.put("start", start);
         params.put("limit", LIMIT);
 
-        return jdbc.query(SELECT_RESERVATION_USER_COMMENT_BY_PRODUCT_ID, params, reservationUserCommentDetailRowMapper);
+        return jdbc.query(ReservationUserCommentDaoSqls.SELECT_RESERVATION_USER_COMMENT_BY_PRODUCT_ID, params, userCommentDetailRowMapper);
     }
 
     public List<ReservationUserCommentDetail> selectUserComments(int start){
@@ -70,18 +71,17 @@ public class ReservationUserCommentDao {
         params.put("start", start);
         params.put("limit", LIMIT);
 
-        return jdbc.query(SELECT_RESERVATION_USER_COMMENT, params, reservationUserCommentDetailRowMapper);
+        return jdbc.query(ReservationUserCommentDaoSqls.SELECT_RESERVATION_USER_COMMENT, params, userCommentDetailRowMapper);
     }
 
     public int getUserCommentsCount(){
-        return jdbc.queryForObject(GET_RESERVATION_USER_COMMENT_COUNT, Collections.<String, Object>emptyMap(), Integer.class);
+        return jdbc.queryForObject(ReservationUserCommentDaoSqls.GET_RESERVATION_USER_COMMENT_COUNT, Collections.<String, Object>emptyMap(), Integer.class);
     }
 
     public int getUserCommentsCountByProductId(int productId){
-        Map<String, Integer> params = new HashMap<>();
-        params.put("productId", productId);
+        Map<String, Integer> params = Collections.singletonMap("productId", productId);
 
-        return jdbc.queryForObject(GET_RESERVATION_USER_COMMENT_COUNT_BY_PRODUCT_ID, params, Integer.class);
+        return jdbc.queryForObject(ReservationUserCommentDaoSqls.GET_RESERVATION_USER_COMMENT_COUNT_BY_PRODUCT_ID, params, Integer.class);
     }
 
     public int insertUserComment(ReservationUserComment userComment){

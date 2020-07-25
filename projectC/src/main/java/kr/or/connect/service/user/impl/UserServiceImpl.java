@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getUser(String loginUserId) {
-        User user = userDao.getUserByEmail(loginUserId);
+    public UserEntity selectUser(String loginUserId) {
+        User user = userDao.selectUserByEmail(loginUserId);
 
         if(user == null)
             return null;
@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserRoleEntity> getUserRoles(String loginUserId) {
-        List<UserRole> userRoles = userRoleDao.getUserRolesByEmail(loginUserId);
+    public List<UserRoleEntity> selectUserRoles(String loginUserId) {
+        List<UserRole> userRoles = userRoleDao.selectUserRolesByEmail(loginUserId);
         List<UserRoleEntity> list = new ArrayList<>();
 
         for(UserRole userRole : userRoles){

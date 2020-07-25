@@ -1,5 +1,6 @@
 package kr.or.connect.dao.user;
 
+import kr.or.connect.dao.user.sqls.UserRoleDaoSqls;
 import kr.or.connect.dto.user.UserRole;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,21 +12,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static kr.or.connect.dao.user.sqls.UserRoleDaoSqls.SELECT_USER_ROLES_BY_EMAIL;
-
-
 @Repository
 public class UserRoleDao {
-    private NamedParameterJdbcTemplate jdbc;
-    private RowMapper<UserRole> rowMapper = BeanPropertyRowMapper.newInstance(UserRole.class);
+    private final NamedParameterJdbcTemplate jdbc;
+    private final RowMapper<UserRole> userRoleRowMapper = BeanPropertyRowMapper.newInstance(UserRole.class);
 
     public UserRoleDao(DataSource dataSource){
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public List<UserRole> getUserRolesByEmail(String email){
+    public List<UserRole> selectUserRolesByEmail(String email){
         Map<String, String> params = Collections.singletonMap("email", email);
 
-        return jdbc.query(SELECT_USER_ROLES_BY_EMAIL, params, rowMapper);
+        return jdbc.query(UserRoleDaoSqls.SELECT_USER_ROLES_BY_EMAIL, params, userRoleRowMapper);
     }
 }
