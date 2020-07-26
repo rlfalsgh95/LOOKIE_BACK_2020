@@ -11,6 +11,7 @@ public class ReservationUserCommentDetail {
     private int productId;
     private int reservationInfoId;
     private int score;
+    private int userId;
     private String comment;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -22,10 +23,11 @@ public class ReservationUserCommentDetail {
 
     public ReservationUserCommentDetail(){}
 
-    public ReservationUserCommentDetail(int productId, int reservationInfoId, int score, String comment) {
+    public ReservationUserCommentDetail(int productId, int reservationInfoId, int score, int userId, String comment) {
         this.productId = productId;
         this.reservationInfoId = reservationInfoId;
         this.score = score;
+        this.userId = userId;
         this.comment = comment;
     }
 
@@ -73,6 +75,14 @@ public class ReservationUserCommentDetail {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getComment() {

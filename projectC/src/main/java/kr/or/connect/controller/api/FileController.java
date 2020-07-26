@@ -1,6 +1,7 @@
 package kr.or.connect.controller.api;
 
 import io.swagger.annotations.ApiOperation;
+import kr.or.connect.Exception.InformationNotFoundException;
 import kr.or.connect.dto.file.FileInfo;
 import kr.or.connect.service.file.FileInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,28 +33,37 @@ public class FileController {
             String contentType = fileInfo.getContentType();
 
             File downloadFile = new File(DOWNLOAD_DIR_PATH + saveFileName);
-            String contentLength = Long.toString(downloadFile.length());
 
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + saveFileName + "\";");
-            response.setHeader("Content-Transfer-Encoding", "binary");
-            response.setHeader("Content-Type", contentType);
-            response.setHeader("Content-Length", contentLength);
-            response.setHeader("Pragma", "no-cache;");
-            response.setHeader("Expires", "-1;");
+            if(downloadFile.exists()){
+                String contentLength = Long.toString(downloadFile.length());
 
-            try(FileInputStream fis = new FileInputStream(downloadFile);
-                OutputStream out = response.getOutputStream()){
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + saveFileName + "\";");
+                response.setHeader("Content-Transfer-Encoding", "binary");
+                response.setHeader("Content-Type", contentType);
+                response.setHeader("Content-Length", contentLength);
+                response.setHeader("Pragma", "no-cache;");
+                response.setHeader("Expires", "-1;");
 
-                int readCount = 0;
-                byte[] buffer = new byte[1024];
+                try(FileInputStream fis = new FileInputStream(downloadFile);
+                    OutputStream out = response.getOutputStream()){
 
-                while((readCount = fis.read(buffer)) != -1){
-                    out.write(buffer, 0, readCount);
+                    int readCount = 0;
+                    byte[] buffer = new byte[1024];
+
+                    while((readCount = fis.read(buffer)) != -1){
+                        out.write(buffer, 0, readCount);
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                    throw new RuntimeException("fail to download file");
                 }
-            }catch(Exception e){
-                e.printStackTrace();
-                throw new RuntimeException("fail to download file");
+            }else{  // 요청 파일이 없는 경우 404로 응답
+                throw new InformationNotFoundException();
             }
+        }else{  // 파일 정보가 없는 경우 404로 응답
+            throw new InformationNotFoundException();
         }
     }
 }
+
+

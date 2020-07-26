@@ -40,8 +40,4 @@ public class CategoryController {
     }
 }
 
-/*
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "The requested information could not be found.")
-class InformationNotFoundException extends RuntimeException{
-}
-*/
+
